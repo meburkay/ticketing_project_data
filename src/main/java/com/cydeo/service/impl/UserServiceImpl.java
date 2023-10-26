@@ -1,16 +1,36 @@
 package com.cydeo.service.impl;
 
 import com.cydeo.dto.UserDTO;
+import com.cydeo.entity.User;
+import com.cydeo.mapper.UserMapper;
+import com.cydeo.repository.UserRepository;
 import com.cydeo.service.UserService;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {  //BREAK TILL 2:20 PM (5 MIN REVIEW)
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
+
     @Override
     public List<UserDTO> listAllUsers() {
-        return null;
+
+        //We can sort the data like this.
+        List<User> userList = userRepository.findAll(Sort.by("firstName"));
+
+        return userList.stream().map(userMapper::convertToDto).collect(Collectors.toList());
+
     }
 
     @Override
@@ -20,6 +40,8 @@ public class UserServiceImpl implements UserService {  //BREAK TILL 2:20 PM (5 M
 
     @Override
     public void save(UserDTO user) {
+
+        userRepository.save(userMapper.convertToEntity(user));
 
     }
 

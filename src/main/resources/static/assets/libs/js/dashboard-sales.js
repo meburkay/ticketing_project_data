@@ -38,34 +38,27 @@ $(function() {
                         }
                     },
                     scales: {
-            yAxes: [{
-                ticks: {
-                    // Include a dollar sign in the ticks
-                    callback: function(value, index, values) {
-                        return '$' + value;
+                        yAxes: [{
+                            ticks: {
+                                // Include a dollar sign in the ticks
+                                callback: function(value, index, values) {
+                                    return '$' + value;
+                                },
+                                fontSize: 14,
+                                fontFamily: 'Circular Std Book',
+                                fontColor: '#71748d',
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                fontSize: 14,
+                                fontFamily: 'Circular Std Book',
+                                fontColor: '#71748d',
+                            }
+                        }],
                     }
-                }
-            }]
-        },
 
 
-         scales: {
-                                    xAxes: [{
-                                        ticks: {
-                                            fontSize: 14,
-                                            fontFamily: 'Circular Std Book',
-                                            fontColor: '#71748d',
-                                        }
-                                    }],
-                                    yAxes: [{
-                                        ticks: {
-                                            fontSize: 14,
-                                            fontFamily: 'Circular Std Book',
-                                            fontColor: '#71748d',
-                                        }
-                                    }]
-                                }
-        
                 }
             });
    

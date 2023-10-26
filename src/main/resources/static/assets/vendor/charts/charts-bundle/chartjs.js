@@ -84,11 +84,23 @@
                     },
                     options: {
                         scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 14,
+                                    fontFamily: 'Circular Std Book',
+                                    fontColor: '#71748d',
+                                }
+                            }],
                             yAxes: [{
-
+                                ticks: {
+                                    fontSize: 14,
+                                    fontFamily: 'Circular Std Book',
+                                    fontColor: '#71748d',
+                                }
                             }]
                         },
-                             legend: {
+
+                        legend: {
                         display: true,
                         position: 'bottom',
 
@@ -99,22 +111,7 @@
                         }
                     },
 
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                fontSize: 14,
-                                fontFamily: 'Circular Std Book',
-                                fontColor: '#71748d',
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                fontSize: 14,
-                                fontFamily: 'Circular Std Book',
-                                fontColor: '#71748d',
-                            }
-                        }]
-                    }
+
                 }
 
                     

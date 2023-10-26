@@ -49,4 +49,20 @@ public class UserServiceImpl implements UserService {
     public void deleteByUserName(String username) {
 
     }
+
+    @Override
+    public UserDTO update(UserDTO user) {
+
+        //Here to update user first we take the user entity from database because we need to know the primary key means id of the user that we will update. Then we convert our updated UserDTO to entity and it still doesn't have any id. If we save like that it will be saved like a new user. Because of that before we save it, we set its id variable and then we save it.
+        //Find current user
+        User user1 = userRepository.findByUserName(user.getUserName());  //has id
+        //Map update user dto to entity object
+        User convertedUser = userMapper.convertToEntity(user);   // has id?
+        //set id to the converted object
+        convertedUser.setId(user1.getId());
+        //save the updated user in the db
+        userRepository.save(convertedUser);
+
+        return findByUserName(user.getUserName());
+    }
 }

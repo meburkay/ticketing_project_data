@@ -67,4 +67,15 @@ public class UserServiceImpl implements UserService {
 
         return findByUserName(user.getUserName());
     }
+
+    //We create this method for delete operations instead of actual delete method. Here we did not delete but instead we change the user's isDelete part to true then save.
+    @Override
+    public void delete(String username) {
+
+        User user = userRepository.findByUserName(username);
+        user.setIsDeleted(true);
+        userRepository.save(user);
+
+    }
+
 }

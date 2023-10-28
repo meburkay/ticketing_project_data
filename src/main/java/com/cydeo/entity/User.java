@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
+@Where(clause = "is_deleted=false")//this is very important. When we add this it add this where clause to every method when taking data from db consist of the jpa in build methods too. When we retrieving data from database about user we only take the is_deleted = false ones.
 public class User extends BaseEntity {
 
     private String firstName;

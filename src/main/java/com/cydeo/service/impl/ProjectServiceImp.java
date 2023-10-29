@@ -18,7 +18,7 @@ public class ProjectServiceImp implements ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
 
-    public ProjectServiceImp(ProjectService projectService, ProjectRepository projectRepository, ProjectMapper projectMapper) {
+    public ProjectServiceImp(ProjectRepository projectRepository, ProjectMapper projectMapper) {
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
     }

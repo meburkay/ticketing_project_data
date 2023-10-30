@@ -12,6 +12,17 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 public class UserDTO {
 
+    //we use UserDTO inside ProjectDTO and when we create a project at the ui part we choose a manager from the list. When created the project at the dp part we need the id number of the manager to put it into the project table db. And because we use UserDTO and it normally doesn't have id we have an exception. To solve this problem we add id variable here.
+    private long id;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     @NotBlank
     @Size(max = 15, min = 2)
     private String firstName;

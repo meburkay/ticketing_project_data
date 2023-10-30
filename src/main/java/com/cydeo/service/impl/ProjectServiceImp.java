@@ -2,6 +2,7 @@ package com.cydeo.service.impl;
 
 import com.cydeo.dto.ProjectDTO;
 import com.cydeo.entity.Project;
+import com.cydeo.enums.Status;
 import com.cydeo.mapper.ProjectMapper;
 import com.cydeo.repository.ProjectRepository;
 import com.cydeo.service.ProjectService;
@@ -36,6 +37,12 @@ public class ProjectServiceImp implements ProjectService {
 
     @Override
     public void save(ProjectDTO dto) {
+
+        //Here at ui part we don't have a status part at the create form. Because of that we set it directly here as opened.
+        dto.setProjectStatus(Status.OPEN);
+
+        Project project = projectMapper.convertToEntity(dto);
+        projectRepository.save(project);
 
     }
 

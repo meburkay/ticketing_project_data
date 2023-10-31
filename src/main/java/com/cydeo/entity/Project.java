@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @Where(clause = "is_deleted=false")
 public class Project extends BaseEntity {
 
+    @Column(unique = true)//When we want an variable unique this annotation used.
     private String projectCode;
     private String projectName;
     @Column(columnDefinition = "DATE")

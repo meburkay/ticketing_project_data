@@ -14,6 +14,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ProjectDTO {
 
+    //We choose project when assigning task at the ui part. And when we save the task we need the id of the project to use at the backend db table as a foreign key when joining them. But here if we do not add id when it is going to backend it became null and throw exception.
+    private Long id;
+
     @NotBlank
     private String projectName;
 

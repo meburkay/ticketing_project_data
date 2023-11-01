@@ -1,13 +1,16 @@
 package com.cydeo.service.impl;
 
 import com.cydeo.dto.ProjectDTO;
+import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.Project;
 import com.cydeo.entity.User;
 import com.cydeo.enums.Status;
 import com.cydeo.mapper.ProjectMapper;
+import com.cydeo.mapper.UserMapper;
 import com.cydeo.repository.ProjectRepository;
 import com.cydeo.service.ProjectService;
-import org.springframework.context.annotation.Lazy;
+import com.cydeo.service.TaskService;
+import com.cydeo.service.UserService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +22,16 @@ public class ProjectServiceImp implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
+    private final UserMapper userMapper;
+    private final UserService userService;
+    private final TaskService taskService;
 
-    public ProjectServiceImp(ProjectRepository projectRepository, ProjectMapper projectMapper) {
+    public ProjectServiceImp(ProjectRepository projectRepository, ProjectMapper projectMapper, UserMapper userMapper, UserService userService, TaskService taskService) {
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
+        this.userMapper = userMapper;
+        this.userService = userService;
+        this.taskService = taskService;
     }
 
     @Override
@@ -79,6 +88,32 @@ public class ProjectServiceImp implements ProjectService {
         Project project = projectRepository.findByProjectCode(projectCode);
         project.setProjectStatus(Status.COMPLETE);
         projectRepository.save(project);
+
+    }
+
+
+    @Override
+    public List<ProjectDTO> listAllProjectDetails() {
+
+        //This line will be handled by security in normal but we do not have security yet. Because of that we write this line of hard code to simulate it.
+        UserDTO currentUserDTO = userService.findByUserName("harold@manager.com");
+
+        User user = userMapper.convertToEntity(currentUserDTO);
+
+        List<Project> list = projectRepository.findAllByAssignedManager(user);
+
+        //Here we change the Project List to ProjectDTO List and because ProjectDTO has 2 fields extra, we set these two fields when converting. But we need that task datas for setting. So we create taskService for that.
+        return list.stream().map(project -> {
+
+                    ProjectDTO obj = projectMapper.convertToDto(project);
+
+            obj.setUnfinishedTaskCounts(taskService.totalNonCompletedTask(project.getProjectCode()));
+            obj.setCompleteTaskCounts(taskService.totalCompletedTask(project.getProjectCode()));
+
+                    return obj;
+                }
+
+        ).collect(Collectors.toList());
 
     }
 }

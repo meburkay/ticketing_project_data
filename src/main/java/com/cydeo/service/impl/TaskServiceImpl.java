@@ -54,8 +54,11 @@ public class TaskServiceImpl implements TaskService {
         Task convertedTask  = taskMapper.convertToEntity(dto);
 
         if(task.isPresent()){
+
+            //Instead of the commented one we arrange our status assign code like this. Because when we want to update our task status to completed which is occurring when we are completed a project it did not update to completed but by this turnary operator we look at the data and if we send a status it is used if the status is null then we use the status at the database.
+            convertedTask.setTaskStatus(dto.getTaskStatus() == null ? task.get().getTaskStatus() : dto.getTaskStatus());
             //We add to updated task the fields that did not include at ui part from db.
-            convertedTask.setTaskStatus(task.get().getTaskStatus());
+            //convertedTask.setTaskStatus(task.get().getTaskStatus());
             convertedTask.setAssignedDate(task.get().getAssignedDate());
             taskRepository.save(convertedTask);
         }

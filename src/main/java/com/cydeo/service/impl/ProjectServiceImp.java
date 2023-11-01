@@ -78,7 +78,15 @@ public class ProjectServiceImp implements ProjectService {
 
         Project project = projectRepository.findByProjectCode(code);
         project.setIsDeleted(true);
+
+        //We add this part to have the ability to use the same code after a project deleted. Normally when we delete project we only change its isDeleted field and it still at the db. Because of that we can not use its code. But by this line we change the deleted project's code.
+        project.setProjectCode(project.getProjectCode() + "-" + project.getId());  // SP03-4
+
         projectRepository.save(project);
+
+        //We add this line for the tasks of the project. When we delete a project tha task that belongs to that project must delete too. By this code we find the tasks that belongs to project and delete them too.
+        taskService.deleteByProject(projectMapper.convertToDto(project));
+
 
     }
 

@@ -10,6 +10,7 @@ import com.cydeo.service.ProjectService;
 import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,8 @@ public class UserServiceImpl implements UserService {
     private final ProjectService projectService;
     private final TaskService taskService;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, UserMapper userMapper, ProjectService projectService, TaskService taskService) {
+    //We add @Lazy annotation here because the service implementations depend on each other and when spring creating the beans it looks at the dependencies and first create that beans and after that it create the main bean. But when we have dependency mutually it can not create beans. So by using @Lazy annotation we said that you create the other part first, you can create these beans when needed.
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, @Lazy ProjectService projectService, @Lazy TaskService taskService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.projectService = projectService;

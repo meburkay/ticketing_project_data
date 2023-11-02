@@ -86,6 +86,9 @@ public class UserServiceImpl implements UserService {
 
         if (checkIfUserCanBeDeleted(user)) {
             user.setIsDeleted(true);
+
+            //We add this line for rearranging the uniqe username. Because if in the future the same user want to create an account he can do it. For that we have to change the name of the old account.
+            user.setUserName(user.getUserName() + "-" + user.getId());  // harold@manager.com-2
             userRepository.save(user);
         }
     }

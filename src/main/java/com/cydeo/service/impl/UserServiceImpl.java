@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> listAllUsers() {
 
         //We can sort the data like this.
-        List<User> userList = userRepository.findAll(Sort.by("firstName"));
+        List<User> userList = userRepository.findAllByIsDeletedOrderByFirstNameDesc(false);
 
         return userList.stream().map(userMapper::convertToDto).collect(Collectors.toList());
 
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findByUserName(String username) {
-        return userMapper.convertToDto(userRepository.findByUserName(username));
+        return userMapper.convertToDto(userRepository.findByUserNameAndIsDeleted(username, false));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
         //Here to update user first we take the user entity from database because we need to know the primary key means id of the user that we will update. Then we convert our updated UserDTO to entity and it still doesn't have any id. If we save like that it will be saved like a new user. Because of that before we save it, we set its id variable and then we save it.
         //Find current user
-        User user1 = userRepository.findByUserName(user.getUserName());  //has id
+        User user1 = userRepository.findByUserNameAndIsDeleted(user.getUserName(), false);  //has id
         //Map update user dto to entity object
         User convertedUser = userMapper.convertToEntity(user);   // has id?
         //set id to the converted object
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String username) {
 
-        User user = userRepository.findByUserName(username);
+        User user = userRepository.findByUserNameAndIsDeleted(username, false);
 
         if (checkIfUserCanBeDeleted(user)) {
             user.setIsDeleted(true);
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> listAllByRole(String role) {
 
-        List<User> users = userRepository.findByRoleDescriptionIgnoreCase(role);
+        List<User> users = userRepository.findByRoleDescriptionIgnoreCaseAndIsDeleted(role, false);
 
         return users.stream().map(userMapper::convertToDto).collect(Collectors.toList());
     }

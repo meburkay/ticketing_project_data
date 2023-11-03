@@ -2,6 +2,7 @@ package com.cydeo.service.impl;
 
 import com.cydeo.dto.RoleDTO;
 import com.cydeo.entity.Role;
+import com.cydeo.mapper.MapperUtil;
 import com.cydeo.mapper.RoleMapper;
 import com.cydeo.repository.RoleRepository;
 import com.cydeo.service.RoleService;
@@ -17,10 +18,12 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
     //We add this dependency injection to map role entities and dtos.
     private final RoleMapper roleMapper;
+    private final MapperUtil mapperUtil;
 
-    public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper) {
+    public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper, MapperUtil mapperUtil) {
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
+        this.mapperUtil = mapperUtil;
     }
 
     @Override
@@ -32,7 +35,11 @@ public class RoleServiceImpl implements RoleService {
 //        return roleList.stream().map(role -> roleMapper.convertToDto(role)).collect(Collectors.toList());
 //        return roleList.stream().map(roleMapper::convertToDto).collect(Collectors.toList());
 
-        return roleRepository.findAll().stream().map(roleMapper::convertToDto).collect(Collectors.toList());
+//        return roleRepository.findAll().stream().map(roleMapper::convertToDto).collect(Collectors.toList());
+
+        //Here we use MapperUtil in two different ways.
+        return roleList.stream().map(role -> mapperUtil.convert(role, new RoleDTO())).collect(Collectors.toList());
+//        return roleList.stream().map(role -> mapperUtil.convert2(role, RoleDTO.class)).collect(Collectors.toList());
 
 
     }
